@@ -1,5 +1,6 @@
 package com.cloudpb.springmall.service;
 
+import com.cloudpb.springmall.constant.ProductCategory;
 import com.cloudpb.springmall.dto.ProductRequest;
 import com.cloudpb.springmall.model.Product;
 
@@ -9,7 +10,7 @@ public interface ProductService {
 
     Product getProductById(Integer productId);
 
-    List<Product> getProducts();
+    List<Product> getProducts(ProductCategory category, String search);
 
 
     Integer createProduct(ProductRequest productRequest);

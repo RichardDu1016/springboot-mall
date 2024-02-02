@@ -1,5 +1,6 @@
 package com.cloudpb.springmall.service.impl;
 
+import com.cloudpb.springmall.constant.ProductCategory;
 import com.cloudpb.springmall.dao.ProductDao;
 import com.cloudpb.springmall.dto.ProductRequest;
 import com.cloudpb.springmall.model.Product;
@@ -21,8 +22,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category, String search) {
+        return productDao.getProducts(category,search);
     }
 
     @Override
