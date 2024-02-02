@@ -16,7 +16,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/products/{productId}")
-    public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
+    public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
         if ( product != null){
             return  ResponseEntity.status(HttpStatus.OK).body(product);
@@ -27,11 +27,26 @@ public class ProductController {
 
 
     @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
         Integer productId = productService.createProduct(productRequest);
         Product product = productService.getProductById(productId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+                                                 @RequestBody @Valid ProductRequest productRequest) {
+        Product product = productService.getProductById(productId);
+
+        // 檢查Product 是否存在
+        if(product != null) {
+        productService.updateProduct(productId, productRequest);
+        Product updatedProduct = productService.getProductById(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
     }
 }
