@@ -33,15 +33,7 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap();
 
         // 查詢條件
-        if(productQueryParams.getCategory() != null){
-            sql = sql + " AND category = :category";
-            map.put("category", productQueryParams.getCategory().toString());
-        }
-
-        if(productQueryParams.getSearch() != null){
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%"); // % = 模糊查詢
-        }
+        sql = addFilteringSql(sql,map,productQueryParams);
 
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
 
@@ -56,15 +48,7 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap();
 
         // 查詢條件
-        if(productQueryParams.getCategory() != null){
-            sql = sql + " AND category = :category";
-            map.put("category", productQueryParams.getCategory().toString());
-        }
-
-        if(productQueryParams.getSearch() != null){
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%"); // % = 模糊查詢
-        }
+        sql = addFilteringSql(sql, map, productQueryParams);
 
         // 排序
         // order by 不能使用變數，只能用字串串接的方式
@@ -152,5 +136,21 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
         namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map , ProductQueryParams productQueryParams){
+        // 查詢條件
+        if(productQueryParams.getCategory() != null){
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParams.getCategory().toString());
+        }
+
+        if(productQueryParams.getSearch() != null){
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%"); // % = 模糊查詢
+        }
+
+        return sql;
+
     }
 }
