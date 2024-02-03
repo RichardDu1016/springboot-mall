@@ -1,6 +1,7 @@
 package com.cloudpb.springmall.dao;
 
 import com.cloudpb.springmall.constant.ProductCategory;
+import com.cloudpb.springmall.dto.ProductQueryParams;
 import com.cloudpb.springmall.dto.ProductRequest;
 import com.cloudpb.springmall.model.Product;
 
@@ -10,7 +11,7 @@ public interface ProductDao {
 
     Product getProductById(Integer productId);
 
-    List<Product> getProducts(ProductCategory category, String search);
+    List<Product> getProducts(ProductQueryParams productQueryParams);
 
     Integer createProduct(ProductRequest productRequest);
 

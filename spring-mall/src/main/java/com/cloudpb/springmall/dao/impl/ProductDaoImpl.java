@@ -2,6 +2,7 @@ package com.cloudpb.springmall.dao.impl;
 
 import com.cloudpb.springmall.constant.ProductCategory;
 import com.cloudpb.springmall.dao.ProductDao;
+import com.cloudpb.springmall.dto.ProductQueryParams;
 import com.cloudpb.springmall.dto.ProductRequest;
 import com.cloudpb.springmall.model.Product;
 import com.cloudpb.springmall.rowmapper.ProductRowMapper;
@@ -26,20 +27,20 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate ;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, " +
                 "created_date, last_modified_date FROM product WHERE 1=1";
 
         Map<String, Object> map = new HashMap();
 
-        if(category != null){
+        if(productQueryParams.getCategory() != null){
             sql = sql + " AND category = :category";
-            map.put("category", category.toString());
+            map.put("category", productQueryParams.getCategory().toString());
         }
 
-        if(search != null){
+        if(productQueryParams.getSearch() != null){
             sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%"); // % = 模糊查詢
+            map.put("search", "%" + productQueryParams.getSearch() + "%"); // % = 模糊查詢
         }
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map , new ProductRowMapper());
