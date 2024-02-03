@@ -6,14 +6,18 @@ import com.cloudpb.springmall.dto.ProductRequest;
 import com.cloudpb.springmall.model.Product;
 import com.cloudpb.springmall.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated // 生效驗證請求參數
 public class ProductController {
 
     @Autowired
@@ -25,13 +29,19 @@ public class ProductController {
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "created_date") String orderBy, // 篩選標的
-            @RequestParam(defaultValue = "desc") String sort  // 升冪或降冪排列
+            @RequestParam(defaultValue = "desc") String sort,  // 升冪或降冪排列
+
+            //分頁功能 pagination
+            @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit,  // 取得幾筆商品數據
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset  // 跳過多少筆數據
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
 
         List<Product> productList = productService.getProducts(productQueryParams);
 
