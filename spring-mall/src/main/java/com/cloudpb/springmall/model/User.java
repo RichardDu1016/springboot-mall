@@ -1,10 +1,19 @@
 package com.cloudpb.springmall.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class User {
     private Integer userId;
+
+    // 自定義JSON回傳值的Key
+    @JsonProperty("e_mail")
     private String email;
+
+    // 將Json 隱藏起來，不回傳
+    @JsonIgnore
     private String password;
     private Date createDate;
     private Date lastModifiedDate;
