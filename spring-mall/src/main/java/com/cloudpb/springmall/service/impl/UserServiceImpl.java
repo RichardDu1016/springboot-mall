@@ -1,6 +1,7 @@
 package com.cloudpb.springmall.service.impl;
 
 import com.cloudpb.springmall.dao.UserDao;
+import com.cloudpb.springmall.dto.UserLoginRequest;
 import com.cloudpb.springmall.dto.UserResgisterRequest;
 import com.cloudpb.springmall.model.User;
 import com.cloudpb.springmall.service.UserService;
@@ -35,5 +36,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+
+        // 檢查email 尚未註冊
+        if(user == null) {
+            log.warn("該 email {} 尚未被註冊", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if (user.getPassword().equals(userLoginRequest.getPassword())) {
+            return user;
+        } else {
+            // 若密碼不正確
+            log.warn("email {} 的密碼不正確", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
