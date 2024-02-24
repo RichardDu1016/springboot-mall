@@ -10,3 +10,14 @@ CREATE TABLE IF NOT EXISTS product
     created_date       TIMESTAMP    NOT NULL,
     last_modified_date TIMESTAMP    NOT NULL
     );
+
+
+CREATE TABLE IF NOT EXISTS `user`
+(
+    user_id            INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    email              VARCHAR(256) NOT NULL UNIQUE,
+    -- UNIQUE 與 UNIQUE KEY 的差別是在於資料庫不同，因此 MSQL 與 H2 使用不同的語法
+    password           VARCHAR(256) NOT NULL,
+    created_date       TIMESTAMP    NOT NULL,
+    last_modified_date TIMESTAMP    NOT NULL
+    );
